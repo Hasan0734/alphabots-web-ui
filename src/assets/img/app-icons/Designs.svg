@@ -1,0 +1,12 @@
+<svg width="267" height="302" viewBox="0 0 267 302" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        Designs
+    </title>
+    <g fill="none" fill-rule="evenodd">
+        <path fill="none" d="M-92-74h450v450H-92z"/>
+        <g fill="#FFF">
+            <path d="M134 128v8h7v32h-7v8H60v-8h-7v-32h7v-8h74zm0-10H60v-7H36v25h7v32h-7v25h24v-7h74v7h24v-25h-7v-32h7v-25h-24v7zM8 69h181c4.418 0 8 3.582 8 8v217c0 4.418-3.582 8-8 8H8c-4.418 0-8-3.582-8-8V77c0-4.418 3.582-8 8-8z"/>
+            <path d="M214.21 233V62.779c0-5.523-4.478-10-10-10H70V8c0-4.418 3.582-8 8-8h181c4.418 0 8 3.582 8 8v217c0 4.418-3.582 8-8 8h-44.79z"/>
+        </g>
+    </g>
+</svg>

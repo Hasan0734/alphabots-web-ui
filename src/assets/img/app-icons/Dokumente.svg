@@ -1,0 +1,9 @@
+<svg width="250" height="326" viewBox="0 0 250 326" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        Dokumente
+    </title>
+    <g fill="none" fill-rule="evenodd">
+        <path fill="none" d="M-100-62h450v450h-450z"/>
+        <path d="M144.968 13H25c-6.906 0-12.5 5.593-12.5 12.496v275.008C12.5 307.407 18.093 313 25 313h200c6.906 0 12.5-5.593 12.5-12.496V101.908L144.968 13zM137.5-4.678L255.178 113H137.5V-4.678zM37.5 188v-50h175v50h-175zm0 50v-50h175v50h-175zm0 0h175v50h-175v-50z" stroke="#FFF" stroke-width="25" fill="#FFF"/>
+    </g>
+</svg>

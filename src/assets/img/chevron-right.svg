@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>chevron-right</title>
+    <desc>Created with Sketch.</desc>
+    <g id="chevron-right" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-5">
+            <polygon id="Stroke-1" stroke-opacity="0.0117647061" stroke="#000000" stroke-width="1.33333336e-11" points="0 0 31.9999987 0 31.9999987 31.9999987 0 31.9999987"></polygon>
+            <polygon id="Fill-3" fill="#000000" points="13.3333325 7.99999952 11.4533329 9.87999914 17.5599991 15.999999 11.4533329 22.1199989 13.3333325 23.9999986 21.3333321 15.999999"></polygon>
+        </g>
+    </g>
+</svg>

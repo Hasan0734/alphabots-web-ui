@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>icon-forward</title>
+    <desc>Created with Sketch.</desc>
+    <g id="icon-forward" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-15">
+            <polygon id="Stroke-1" fill-opacity="0" fill="#FFFFFF" points="0 0 15.9999993 0 15.9999993 15.9999993 0 15.9999993"></polygon>
+            <path d="M6.44444444,4.2 L6.44444444,1 L1,6.6 L6.44444444,12.2 L6.44444444,8.91999968 C10.3333333,8.91999968 13.0555556,10.2 15,13 C14.2222222,9 11.8888889,5 6.44444444,4.2 Z" id="Fill-3" fill="#000000" transform="translate(8.000000, 7.000000) scale(-1, 1) translate(-8.000000, -7.000000) "></path>
+        </g>
+    </g>
+</svg>

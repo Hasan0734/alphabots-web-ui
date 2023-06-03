@@ -1,0 +1,13 @@
+<svg width="326" height="326" viewBox="0 0 326 326" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        Definition
+    </title>
+    <g fill="none" fill-rule="evenodd">
+        <path fill="none" d="M-62-62h450v450H-62z"/>
+        <g transform="translate(.5 .5)">
+            <circle stroke="#FFF" stroke-width="37.5" cx="162.5" cy="162.5" r="118.75"/>
+            <path d="M162.5 250c-48.325 0-87.5-39.175-87.5-87.5S114.175 75 162.5 75s87.5 39.175 87.5 87.5-39.175 87.5-87.5 87.5zm0-62.5c13.807 0 25-11.193 25-25s-11.193-25-25-25-25 11.193-25 25 11.193 25 25 25z" fill="#FFF"/>
+            <path fill="#FFF" d="M150 0h25v87.5h-25zM150 237.5h25V325h-25zM0 150h87.5v25H0zM237.5 150H325v25h-87.5z"/>
+        </g>
+    </g>
+</svg>

@@ -3,20 +3,20 @@ import { employees } from '../../utils/data';
 import { PieChart } from 'react-minimal-pie-chart';
 import { useDispatch, useSelector } from 'react-redux';
 import { setRobotsData } from '../../features/robot/robotSlice';
+import { setRobotState } from '../../features/robotState/robotStateSlice';
 
 const RobotRight = ({
-    numSelected,
-    isTeamMode,
     getFullNameAbbr,
-    currentRobot,
-    currentRobotIdx,
-    setAfterAssignment,
     assignOverlay
 
 }: any) => {
 
-    const { robotsList } = useSelector((state: any) => state.robot)
+    const { robotsList } = useSelector((state: any) => state.robot);
+    const { robotState } = useSelector((state: any) => state.robotState);
+
     const dispatch = useDispatch();
+
+    const { numSelected, currentRobot, currentRobotIdx } = robotState
 
     const reportRobot = (idx: number): void => {
         const newRobots: any = [...robotsList];
@@ -47,17 +47,19 @@ const RobotRight = ({
             }
             newRobots[i] = objCopy
         }
-        console.log(user)
+
         dispatch(setRobotsData(newRobots))
-        setAfterAssignment(true)
+        dispatch(setRobotState({ afterAssignment: true }))
     };
+
+
     return (
         <>
             <div id="right">
 
-                {numSelected > 0 && isTeamMode &&
-                    <div className="card c-bigshadow c-padding" 
-                    id="card-assign" ref={assignOverlay}>
+                {numSelected > 0 && robotState.isTeamMode &&
+                    <div className="card c-bigshadow c-padding"
+                        id="card-assign" ref={assignOverlay}>
                         <div>
                             <header>Roboter zuteilen</header>
                             <div className="form-row">

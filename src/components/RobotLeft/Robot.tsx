@@ -2,34 +2,27 @@ import { gsap } from 'gsap';
 import $ from 'jquery';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { setRobotsData } from '../../features/robot/robotSlice';
 import AktenIcon from '../../assets/img/app-icons/Akten.svg';
 import ScheduleIcon from '../../assets/img/icon-schedule.svg';
 import StartIcon from '../../assets/img/icon-start.svg'
 import StopIcon from '../../assets/img/icon-stop.svg'
+import { setRobotState } from '../../features/robotState/robotStateSlice';
 
-const Robot = ({ i, robot,
-    getFullNameAbbr,
-    onSelectAll,
+const Robot = ({
+    i,
+    robot,
     scheduleOverlay,
-    setSchedulableRobot,
-    setSchedulableRobotIdx,
-    setCurrentRobot,
-    setCurrentRobotIdx,
-    isTeamMode,
-    setQueries,
-    afterAssignment,
-    setAfterAssignment,
-    setSelectAll,
-    setNumSelected,
-    currentRobotIdx,
+    onSelectAll,
+    getFullNameAbbr
 
 }: any) => {
     const { robotsList } = useSelector((state: any) => state.robot)
+    const { robotState } = useSelector((state: any) => state.robotState);
     const dispatch = useDispatch();
 
+    const { isTeamMode, currentRobotIdx, afterAssignment } = robotState
 
     const openPopup = (popup: any): void => {
 
@@ -49,13 +42,13 @@ const Robot = ({ i, robot,
         const startDate = robot.startDate;
         if (startDate) {
 
-
             robot.startDate = startDate.split(' ')[0];
             robot.startTime = startDate.split(' ')[1];
         }
-
-        setSchedulableRobot(robot);
-        setSchedulableRobotIdx(idx);
+        dispatch(setRobotState({
+            schedulableRobot: robot,
+            schedulableRobotIdx: idx
+        }))
     };
 
 
@@ -67,9 +60,12 @@ const Robot = ({ i, robot,
         } else if (el.attr('type') === 'checkbox') {
             // do nothing
         } else if (rowHasStats(idx) && !isTeamMode) {
-            setCurrentRobot(robotsList[idx]);
-            setCurrentRobotIdx(idx)
-
+            dispatch(setRobotState(
+                {
+                    currentRobot: robotsList[idx],
+                    currentRobotIdx: idx
+                }
+            ))
         }
     };
 
@@ -86,14 +82,25 @@ const Robot = ({ i, robot,
 
     }
 
-    const setQuery = (query: string): void => {
-        setQueries(query)
-    }
+    // const setQuery = (query: string): void => {
+    //     dispatch(setRobotState(
+    //         {
+    //             queries: query
+
+    //         }
+    //     ))
+    // }
 
     const onSelectRow = (checked: string, idx: number): void => {
         if (afterAssignment === true) {
             onSelectAll(false);
-            setAfterAssignment(false);
+            dispatch(setRobotState(
+                {
+                    afterAssignment: false
+
+                }
+            ))
+
         }
 
         const newRobots = [...robotsList];
@@ -103,13 +110,17 @@ const Robot = ({ i, robot,
         objCopy.selected = checked
         newRobots[idx] = objCopy;
 
-        var numSelected = 0;
+        var numSelect = 0;
         for (var i in newRobots) {
-            if (newRobots[i].selected) numSelected++;
+            if (newRobots[i].selected) numSelect++;
         }
         dispatch(setRobotsData(newRobots))
-        setSelectAll(numSelected === robotsList.length)
-        setNumSelected(numSelected)
+
+        dispatch(setRobotState({
+            numSelected: numSelect,
+            selectAll: numSelect === robotsList.length
+
+        }))
 
     }
 
@@ -128,7 +139,7 @@ const Robot = ({ i, robot,
     const updateRobot = (newRobots: any[], idx: number, status: string, startDate: string) => {
         const obj = newRobots[idx]
         Object.freeze(obj);
-        const objCopy = { ...obj }; // 👈️ create copy
+        const objCopy = { ...obj };
         objCopy.status = status;
         objCopy.startDate = startDate
         newRobots[idx] = objCopy

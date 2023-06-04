@@ -4,6 +4,7 @@ import authReducer from './../features/auth/authSlice'
 import globalSlice from './../features/global/globalSlice'
 import userReducer from './../features/user/userSlice'
 import robotReducer from '../features/robot/robotSlice'
+import stateReducer from '../features/robotState/robotStateSlice'
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     user: userReducer,
     robot: robotReducer,
     global: globalSlice,
+    robotState: stateReducer
   },
   devTools: process.env.NODE_ENV !== 'production',
   middleware: (getDefaultMIddlewares:any) =>

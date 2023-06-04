@@ -1,19 +1,26 @@
-import React from 'react';
 import Logo from '../../assets/img/alphabots-logo.png'
-import { useLogoutQuery } from '../../features/auth/authApi';
 import useAuth from '../../hooks/useAuth';
 import Avatar from '../../assets/img/user-avatar.png'
+import { useDispatch, useSelector } from 'react-redux';
+import { setRobotState } from '../../features/robotState/robotStateSlice';
 
-const Navbar = ({ setIsTeamMode, isTeamMode }: any) => {
+const Navbar = () => {
     const auth = useAuth()
     // const {refetch}  = useLogoutQuery(null)
 
+    const { robotState: { isTeamMode } } = useSelector((state: any) => state.robotState)
+    const dispatch = useDispatch();
+
+
     const logout = (event: any) => {
         // refetch()
-        useLogoutQuery(undefined)
-       
+        // useLogoutQuery(undefined)
+
     };
 
+    const setIsTeamMode = (value: boolean) => {
+        dispatch(setRobotState({ isTeamMode: value }))
+    };
 
     return (
         <>

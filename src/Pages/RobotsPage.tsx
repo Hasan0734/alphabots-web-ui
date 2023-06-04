@@ -4,25 +4,21 @@ import RobotLeft from "../components/RobotLeft/RobotLeft";
 import RobotRight from "../components/RobotRight/RobotRight";
 import { useDispatch } from "react-redux";
 import { setRobotsData } from "../features/robot/robotSlice";
+import { setRobotState } from "../features/robotState/robotStateSlice";
 
-const RobotsPage = ({ isTeamMode, setIsTeamMode }: any) => {
-
-  const [afterAssignment, setAfterAssignment] = React.useState(false)
-  const [currentRobot, setCurrentRobot]: any = React.useState(null);
-  const [currentRobotIdx, setCurrentRobotIdx]: any = React.useState(null);
-  const [queries, setQueries] = React.useState('');
-  const [filter, setFilter]: any = React.useState('');
-  const [numSelected, setNumSelected] = React.useState(0);
+const RobotsPage = () => {
 
   const dispatch = useDispatch();
   let assignOverlay: any = React.useRef(null)
 
   React.useEffect(() => {
     dispatch(setRobotsData(robotsData))
-    setQueries('');
-    setFilter(null);
+    dispatch(setRobotState({
+      queries: '',
+      filter: ''
+    }))
 
-  }, [])
+  }, [dispatch])
 
 
   const getFullNameAbbr = (fullName: string | undefined): string => {
@@ -42,28 +38,13 @@ const RobotsPage = ({ isTeamMode, setIsTeamMode }: any) => {
       {/* <div>{props.modeTeam}</div> */}
 
       <RobotLeft
-           setCurrentRobot={setCurrentRobot}
-           setCurrentRobotIdx={setCurrentRobotIdx}
-           isTeamMode={isTeamMode}
-           setQueries={setQueries}
-           afterAssignment={afterAssignment}
-           setAfterAssignment={setAfterAssignment}
-           setNumSelected={setNumSelected}
-           filter={filter}
-           queries={queries}
-           currentRobotIdx={currentRobotIdx}
-           getFullNameAbbr={getFullNameAbbr}
-           setFilter={setFilter}
+
+        getFullNameAbbr={getFullNameAbbr}
 
       />
       <RobotRight
-        numSelected={numSelected}
-        isTeamMode={isTeamMode}
         assignOverlay={assignOverlay}
         getFullNameAbbr={getFullNameAbbr}
-        currentRobot={currentRobot}
-        currentRobotIdx={currentRobotIdx}
-        setAfterAssignment={setAfterAssignment}
       />
 
     </>

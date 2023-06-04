@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import './assets/styles/styles.scss';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PublicRoute from './AuthRoutes/PublicRoute';
@@ -10,11 +9,7 @@ import useAuthCheck from './hooks/useAuthCheck'
 import Navbar from './components/Navbar/Navbar';
 
 function App() {
-  const [isTeamMode, setIsTeamMode] = useState(false)
-
   const authCheck = useAuthCheck()
-
-  console.log(authCheck)
 
   return !authCheck ? (<div>Loading</div>) :  (<Router>
   
@@ -22,8 +17,6 @@ function App() {
       <div id="app-wrapper" className="App">
         <div id="canvas-wrapper">
           <Navbar 
-          isTeamMode={isTeamMode}
-          setIsTeamMode={setIsTeamMode}
           />
 
           <div id="canvas">
@@ -33,8 +26,9 @@ function App() {
                 element={
                   <PrivateRoute>
                     <RobotsPage 
-                    isTeamMode={isTeamMode}
-                     setIsTeamMode={setIsTeamMode} />
+                    // isTeamMode={isTeamMode}
+                    //  setIsTeamMode={setIsTeamMode}
+                      />
                  </PrivateRoute>
                 }
               />

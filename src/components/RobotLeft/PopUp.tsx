@@ -1,4 +1,3 @@
-import React from 'react';
 import { gsap } from 'gsap';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
@@ -6,10 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import TimeField from 'react-simple-timefield';
 import { setRobotsData } from '../../features/robot/robotSlice';
 import $ from 'jquery';
+import { setRobotState } from '../../features/robotState/robotStateSlice';
 
-const PopUp = ({ scheduleOverlay, schedulableRobot, schedulableRobotIdx, setSchedulableRobot }: any) => {
+const PopUp = ({ scheduleOverlay }: any) => {
 
     const { robotsList } = useSelector((state: any) => state.robot)
+    const { robotState: { schedulableRobot, schedulableRobotIdx } } = useSelector((state: any) => state.robotState)
     const dispatch = useDispatch();
 
     const sr = (): any => {
@@ -22,9 +23,8 @@ const PopUp = ({ scheduleOverlay, schedulableRobot, schedulableRobotIdx, setSche
         Object.freeze(obj);
         const objCopy = { ...obj };
         const sr: any = schedulableRobot;
-        console.log(sr)
-        objCopy.status= "scheduled"
-        objCopy.startDate= sr.startDate + ' ' + sr.startTime
+        objCopy.status = "scheduled"
+        objCopy.startDate = sr.startDate + ' ' + sr.startTime
 
         newRobots[schedulableRobotIdx] = objCopy
         dispatch(setRobotsData(newRobots))
@@ -42,8 +42,6 @@ const PopUp = ({ scheduleOverlay, schedulableRobot, schedulableRobotIdx, setSche
 
     const closePopup = (popup: any): Promise<any> => {
         const bg = $('#overlay-bg');
-        const self = this;
-
         return new Promise(
             function (resolve, reject) {
                 const tl = gsap.timeline({
@@ -62,26 +60,37 @@ const PopUp = ({ scheduleOverlay, schedulableRobot, schedulableRobotIdx, setSche
     }
 
     const setScheduleDate = (day: string): void => {
-        const sr: any = schedulableRobot;
+        const sr: any = {...schedulableRobot};
+        Object.freeze(sr)
+        const objCopy = {...sr}
         if (sr !== null) {
-            sr.startDate = day;
-            setSchedulableRobot(sr)
+            objCopy.startDate = day;
+            
+            dispatch(setRobotState({
+                schedulableRobot: objCopy
+            }))
         }
     }
     // event: any,
     const setScheduleTime = (time: string): void => {
-        const sr: any = schedulableRobot;
+        const sr: any = {...schedulableRobot};
+        Object.freeze(sr)
+        const objCopy = {...sr}
         if (sr !== null) {
-            sr.startTime = time;
-            setSchedulableRobot(sr)
+            objCopy.startTime = time;
+            dispatch(setRobotState({
+                schedulableRobot: objCopy
+            }))
         }
+        
     }
+
 
     const setScheduleType = (type: string): void => {
         const sr: any = schedulableRobot;
         if (sr !== null) {
-            // sr.scheduleType = type;
-            setSchedulableRobot({...schedulableRobot, scheduleType:type })
+            dispatch(setRobotState({ schedulableRobot: { ...schedulableRobot, 
+                scheduleType: type } }))
         }
     }
 
@@ -90,9 +99,7 @@ const PopUp = ({ scheduleOverlay, schedulableRobot, schedulableRobotIdx, setSche
     const setScheduleRythm = (rythm: string): void => {
         const sr: any = schedulableRobot;
         if (sr !== null) {
-            // sr.scheduleRythm = rythm;
-            setSchedulableRobot({...schedulableRobot, scheduleRythm:rythm })
-            // setSchedulableRobot(sr)
+            dispatch(setRobotState({ schedulableRobot: { ...schedulableRobot, scheduleRythm: rythm } }))
         }
     }
 
@@ -100,7 +107,6 @@ const PopUp = ({ scheduleOverlay, schedulableRobot, schedulableRobotIdx, setSche
         const d: Date | null = schedulableRobot?.startDate ? new Date(schedulableRobot.startDate) : null;
         return d instanceof Date && !isNaN(d as any);
     };
-
 
     return (
         <>

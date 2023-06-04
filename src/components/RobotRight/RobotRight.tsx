@@ -7,24 +7,24 @@ import { setRobotsData } from '../../features/robot/robotSlice';
 const RobotRight = ({
     numSelected,
     isTeamMode,
-    assignOverlay,
     getFullNameAbbr,
     currentRobot,
     currentRobotIdx,
-    robots,
-    setRobots,
-    setAfterAssignment
+    setAfterAssignment,
+    assignOverlay
 
 }: any) => {
 
     const { robotsList } = useSelector((state: any) => state.robot)
     const dispatch = useDispatch();
 
-
     const reportRobot = (idx: number): void => {
-        const newRobots: any = robotsList;
-        newRobots[idx].reported = true;
-        setRobots(newRobots)
+        const newRobots: any = [...robotsList];
+        const obj = newRobots[idx]
+        Object.freeze(obj);
+        const objCopy = { ...obj };
+        objCopy.reported = true;
+        newRobots[idx] = objCopy
         dispatch(setRobotsData(newRobots))
     }
 
@@ -34,16 +34,21 @@ const RobotRight = ({
     };
 
     const assignSelectedRobotsTo = (user: any) => {
-        const newRobots: any = robotsList;
+        const newRobots: any = [...robotsList];
         // const robots = this.getFilteredRows();
 
         for (var i in newRobots) {
-            if (newRobots[i].selected) {
-                newRobots[i].user = user;
+            const obj = newRobots[i]
+            Object.freeze(obj);
+            const objCopy = { ...obj };
+
+            if (obj.selected) {
+                objCopy.user = user;
             }
+            newRobots[i] = objCopy
         }
+        console.log(user)
         dispatch(setRobotsData(newRobots))
-        setRobots(newRobots)
         setAfterAssignment(true)
     };
     return (
@@ -51,7 +56,8 @@ const RobotRight = ({
             <div id="right">
 
                 {numSelected > 0 && isTeamMode &&
-                    <div className="card c-bigshadow c-padding" id="card-assign" ref={(el: any) => assignOverlay = el}>
+                    <div className="card c-bigshadow c-padding" 
+                    id="card-assign" ref={assignOverlay}>
                         <div>
                             <header>Roboter zuteilen</header>
                             <div className="form-row">

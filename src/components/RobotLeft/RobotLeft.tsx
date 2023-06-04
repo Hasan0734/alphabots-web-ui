@@ -43,7 +43,7 @@ const RobotLeft = ({
 
     const getFilteredRows = (): any => {
         let filteredRows = [] as any;
-        const newRobots: any = robotsList;
+        const newRobots: any = [...robotsList];
 
         filteredRows = newRobots.filter((robot: any) => {
             let result = true;

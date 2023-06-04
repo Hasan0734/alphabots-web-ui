@@ -10,6 +10,7 @@ const Navbar = ({ setIsTeamMode, isTeamMode }: any) => {
 
     const logout = (event: any) => {
         // refetch()
+        useLogoutQuery(undefined)
        
     };
 

@@ -96,8 +96,13 @@ const Robot = ({ i, robot,
             setAfterAssignment(false);
         }
 
-        const newRobots: any = robotsList;
-        newRobots[idx].selected = checked;
+        const newRobots = [...robotsList];
+        const obj = newRobots[idx]
+        Object.freeze(obj);
+        const objCopy = { ...obj }; // 👈️ create copy
+        objCopy.selected = checked
+        newRobots[idx] = objCopy;
+
         var numSelected = 0;
         for (var i in newRobots) {
             if (newRobots[i].selected) numSelected++;

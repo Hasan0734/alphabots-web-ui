@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom'
 
 
 const LoginPage = () => {
-    const [login, { data, isLoading, error }]:any = useLoginMutation()
+    const [login, { data, isLoading, error }]:any = useLoginMutation();
+    
     const navigate = useNavigate()
     interface loginData {
         email: string,

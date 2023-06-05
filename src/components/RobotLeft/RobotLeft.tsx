@@ -5,16 +5,18 @@ import Robot from './Robot';
 import React from 'react';
 import PopUp from './PopUp';
 import RobotListHeader from './RobotListHeader';
+import { getFullNameAbbr } from '../../lib/func';
+import { setRobotState } from '../../features/robotState/robotStateSlice';
 
-const RobotLeft = ({getFullNameAbbr}: any) => {
+
+const RobotLeft = () => {
     const { robotsList } = useSelector((state: any) => state.robot)
     const dispatch = useDispatch();
-
     const { robotState } = useSelector((state: any) => state.robotState);
-
     const { filter, queries } = robotState
-
     let scheduleOverlay: any = React.useRef(null)
+
+
 
     const getFilteredRows = (): any => {
         let filteredRows = [] as any;
@@ -45,7 +47,7 @@ const RobotLeft = ({getFullNameAbbr}: any) => {
     };
 
     const onSelectAll = (checked: boolean): void => {
-        dispatch(setRobotsData({selectAll: checked}))
+        dispatch(setRobotState({ selectAll: checked, numSelected: robotsList.length }))
         const newRobots: any = [...robotsList];
         // const robots = this.getFilteredRows();
 
@@ -59,12 +61,10 @@ const RobotLeft = ({getFullNameAbbr}: any) => {
         dispatch(setRobotsData(newRobots))
     }
 
-
     return (
         <>
             <PopUp
                 scheduleOverlay={scheduleOverlay}
-
             />
             <div id="left">
                 <div className="card">

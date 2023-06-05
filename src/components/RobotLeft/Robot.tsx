@@ -22,7 +22,7 @@ const Robot = ({
     const { robotState } = useSelector((state: any) => state.robotState);
     const dispatch = useDispatch();
 
-    const { isTeamMode, currentRobotIdx, afterAssignment } = robotState
+    const { isTeamMode, currentRobotId, afterAssignment } = robotState
 
     const openPopup = (popup: any): void => {
 
@@ -35,35 +35,38 @@ const Robot = ({
     };
 
 
-    const onClickSchedule = (idx: number): void => {
+    const onClickSchedule = (id: number): void => {
         openPopup(scheduleOverlay.current);
+        const robot = robotsList?.find((robot: any) => robot?.id === id)
+     
+        Object.freeze(robot);
+        const objCopy = {...robot}
+        const startDate = objCopy?.startDate;
 
-        const robot = { ...robotsList[idx] };
-        const startDate = robot.startDate;
         if (startDate) {
 
-            robot.startDate = startDate.split(' ')[0];
-            robot.startTime = startDate.split(' ')[1];
+            objCopy.startDate = startDate.split(' ')[0];
+            objCopy.startTime = startDate.split(' ')[1];
         }
         dispatch(setRobotState({
-            schedulableRobot: robot,
-            schedulableRobotIdx: idx
+            schedulableRobot: objCopy,
+            schedulableRobotId: id
         }))
     };
 
 
 
-    const onRowClick = (idx: number, event: any) => {
+    const onRowClick = (id: number, event: any) => {
         const el = $(event.target);
         if (el.hasClass('r-short-desc') || el.hasClass('row-desc')) {
             el.parents('.robot-row').toggleClass('open');
         } else if (el.attr('type') === 'checkbox') {
             // do nothing
-        } else if (rowHasStats(idx) && !isTeamMode) {
+        } else if (rowHasStats(id) && !isTeamMode) {
             dispatch(setRobotState(
                 {
-                    currentRobot: robotsList[idx],
-                    currentRobotIdx: idx
+                    currentRobot: robotsList?.find((robot:any) => robot.id === id),
+                    currentRobotId: id
                 }
             ))
         }
@@ -71,14 +74,14 @@ const Robot = ({
 
 
 
-    const startRobot = (idx: number): void => {
+    const startRobot = (id: number): void => {
         const newRobots = [...robotsList];
-        updateRobot(newRobots, idx, 'running', '08.09.2021 12:15')
+        updateRobot(newRobots, id, 'running', '08.09.2021 12:15')
     };
 
-    const stopRobot = (idx: number): void => {
+    const stopRobot = (id: number): void => {
         const newRobots = [...robotsList];
-        updateRobot(newRobots, idx, 'idle', '08.09.2021 12:15')
+        updateRobot(newRobots, id, 'idle', '08.09.2021 12:15')
 
     }
 
@@ -91,7 +94,7 @@ const Robot = ({
     //     ))
     // }
 
-    const onSelectRow = (checked: string, idx: number): void => {
+    const onSelectRow = (checked: string, id: number): void => {
         if (afterAssignment === true) {
             onSelectAll(false);
             dispatch(setRobotState(
@@ -104,13 +107,14 @@ const Robot = ({
         }
 
         const newRobots = [...robotsList];
-        const obj = newRobots[idx]
+        const obj = newRobots.find((robot:any) => robot.id === id)
         Object.freeze(obj);
         const objCopy = { ...obj }; // 👈️ create copy
         objCopy.selected = checked
-        newRobots[idx] = objCopy;
-
+        const index = newRobots.findIndex((robot) => robot.id === id)
+        newRobots[index] = objCopy;
         var numSelect = 0;
+
         for (var i in newRobots) {
             if (newRobots[i].selected) numSelect++;
         }
@@ -125,29 +129,31 @@ const Robot = ({
     }
 
 
-    const getRowClass = (idx: number): string => {
+    const getRowClass = (id: number): string => {
         let cls = 'robot-row';
-        if (idx === currentRobotIdx) {
+        if (id === currentRobotId) {
             cls += ' current';
         }
-        if (rowHasStats(idx) && !isTeamMode) {
+        if (rowHasStats(id) && !isTeamMode) {
             cls += ' openable';
         }
         return cls;
     };
 
-    const updateRobot = (newRobots: any[], idx: number, status: string, startDate: string) => {
-        const obj = newRobots[idx]
+    const updateRobot = (newRobots: any[], id: number, status: string, startDate: string) => {
+        const obj = newRobots.find((robot:any) => robot.id === id)
         Object.freeze(obj);
         const objCopy = { ...obj };
         objCopy.status = status;
         objCopy.startDate = startDate
-        newRobots[idx] = objCopy
+        const index = newRobots.findIndex((robot:any) => robot.id === id)
+        newRobots[index] = objCopy
         dispatch(setRobotsData(newRobots))
 
     }
-    const rowHasStats = (idx: number): boolean => {
-        return robotsList[idx].status === 'success' || robotsList[idx].status === 'failed';
+    const rowHasStats = (id: number): boolean => {
+        const robot = robotsList?.find((robot:any) => robot.id === id)
+        return robot?.status === 'success' || robot?.status === 'failed';
     };
 
 
@@ -155,14 +161,14 @@ const Robot = ({
         <>
 
             <div
-                onClick={(e) => onRowClick(i, e)}
-                className={getRowClass(i)}>
+                onClick={(e) => onRowClick(robot.id, e)}
+                className={getRowClass(robot.id)}>
                 <div className="row-body">
                     <div>
                         <input
                             type="checkbox"
                             checked={robot.selected}
-                            onChange={(e: any) => onSelectRow(e.target.checked, i)} />
+                            onChange={(e: any) => onSelectRow(e.target.checked, robot?.id)} />
                     </div>
                     <div>
                         <figure className="robot-icon">
@@ -187,7 +193,7 @@ const Robot = ({
                                 }
                                 {robot.status === 'scheduled' &&
                                     <div className="r-label l-scheduled"
-                                        onClick={() => onClickSchedule(i)}>
+                                        onClick={() => onClickSchedule(robot?.id)}>
                                         <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><g opacity=".8" stroke="#0A105D" strokeLinecap="round" strokeLinejoin="round"><path d="M8 5v3M10.598 9.5L8 8M11.51 6.232h2.5v-2.5" /><path d="M11.89 11.89a5.5 5.5 0 110-7.78l2.12 2.122" /></g></svg>
                                         <span>Start am {robot.startDate.split(' ')[1]}</span>
                                     </div>
@@ -206,13 +212,13 @@ const Robot = ({
                                     <>
                                         <Tippy content="Hello">
                                             <button className="btn-empty"
-                                                onClick={() => onClickSchedule(i)}>
+                                                onClick={() => onClickSchedule(robot?.id)}>
                                                 <img src={ScheduleIcon}
                                                     alt="schedule" />
                                             </button>
                                         </Tippy>
                                         <button className="btn-empty"
-                                            onClick={() => startRobot(i)}>
+                                            onClick={() => startRobot(robot.id)}>
                                             <img src={StartIcon}
                                                 alt="start" />
                                         </button>
@@ -221,11 +227,11 @@ const Robot = ({
                                 {robot.status === 'running' &&
                                     <button className="btn-empty"
 
-                                        onClick={() => stopRobot(i)}>
+                                        onClick={() => stopRobot(robot.id)}>
                                         <img src={StopIcon} alt="schedule" />
                                     </button>
                                 }
-                                {rowHasStats(i) &&
+                                {rowHasStats(robot.id) &&
                                     <>
                                         <span className="clr-success">
                                             <strong>{robot.stats.success}</strong></span>/

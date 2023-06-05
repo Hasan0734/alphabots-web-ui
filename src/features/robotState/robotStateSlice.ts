@@ -4,13 +4,13 @@ interface stateType {
   robotState: {
     afterAssignment: Boolean,
     currentRobot: any,
-    currentRobotIdx: any,
+    currentRobotId: any,
     queries: any,
     filter: any,
-    numSelected: any,
+    numSelected: number,
     isTeamMode: boolean,
     schedulableRobot: any,
-    schedulableRobotIdx: any,
+    schedulableRobotId: any,
     selectAll: boolean
   }
 }
@@ -19,13 +19,13 @@ const initialState: stateType = {
   robotState: {
     afterAssignment: false,
     currentRobot: null,
-    currentRobotIdx: null,
+    currentRobotId: null,
     queries: '',
     filter: '',
     numSelected: 0,
     isTeamMode: false,
     schedulableRobot: null,
-    schedulableRobotIdx: null,
+    schedulableRobotId: null,
     selectAll: false
   }
 

@@ -10,7 +10,7 @@ import { setRobotState } from '../../features/robotState/robotStateSlice';
 const PopUp = ({ scheduleOverlay }: any) => {
 
     const { robotsList } = useSelector((state: any) => state.robot)
-    const { robotState: { schedulableRobot, schedulableRobotIdx } } = useSelector((state: any) => state.robotState)
+    const { robotState: { schedulableRobot, schedulableRobotId } } = useSelector((state: any) => state.robotState)
     const dispatch = useDispatch();
 
     const sr = (): any => {
@@ -19,14 +19,13 @@ const PopUp = ({ scheduleOverlay }: any) => {
 
     const saveSchedule = (): void => {
         const newRobots: any[] = [...robotsList];
-        const obj = newRobots[schedulableRobotIdx]
+        const obj = newRobots.find((robot:any) => robot?.id === schedulableRobotId)
         Object.freeze(obj);
         const objCopy = { ...obj };
         const sr: any = schedulableRobot;
         objCopy.status = "scheduled"
         objCopy.startDate = sr.startDate + ' ' + sr.startTime
-
-        newRobots[schedulableRobotIdx] = objCopy
+        newRobots[schedulableRobotId] = objCopy
         dispatch(setRobotsData(newRobots))
         onCloseSchedule();
     };

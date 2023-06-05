@@ -3,19 +3,21 @@ import useAuth from '../../hooks/useAuth';
 import Avatar from '../../assets/img/user-avatar.png'
 import { useDispatch, useSelector } from 'react-redux';
 import { setRobotState } from '../../features/robotState/robotStateSlice';
+import { useLogoutQuery } from '../../features/auth/authApi';
+import { useState } from 'react';
 
 const Navbar = () => {
     const auth = useAuth()
-    // const {refetch}  = useLogoutQuery(null)
+    const [isLogout, setIsLogout] = useState(true);
 
     const { robotState: { isTeamMode } } = useSelector((state: any) => state.robotState)
     const dispatch = useDispatch();
 
-
+    useLogoutQuery(undefined, {
+        skip: isLogout
+    })
     const logout = (event: any) => {
-        // refetch()
-        // useLogoutQuery(undefined)
-
+        setIsLogout(false)
     };
 
     const setIsTeamMode = (value: boolean) => {

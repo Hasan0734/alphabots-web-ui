@@ -26,8 +26,7 @@ function App() {
                 element={
                   <PrivateRoute>
                     <RobotsPage 
-                    // isTeamMode={isTeamMode}
-                    //  setIsTeamMode={setIsTeamMode}
+                
                       />
                  </PrivateRoute>
                 }
